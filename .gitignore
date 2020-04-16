@@ -1,3 +1,9 @@
 .git/
+
 .idea/
+
 __pycache__/
+.pytest_cache
+build/
+dist/
+get_browser_header_ZWZW911.egg-info/

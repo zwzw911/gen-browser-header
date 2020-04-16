@@ -5,7 +5,8 @@
 
 class ResponseException(Exception):
     CodeMatchMsg = {
-        404: '404，页面不存在'
+        404: '404，页面不存在',
+        503: '503, 服务不可用',
     }
 
     def __init__(self, code):
@@ -18,12 +19,3 @@ class ResponseException(Exception):
 
     def __str__(self):
         return '错误代码: %d，%s' % (self.code, self.msg)
-
-
-class InvalidFieldException(Exception):
-    def __init__(self, field_name):
-        super().__init__()
-        self.msg = '字段%s不存在' % field_name
-
-    def __str__(self):
-        return '错误：%s' % self.msg
