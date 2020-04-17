@@ -60,7 +60,7 @@ def detect_if_proxy_usable(proxies, timeout=5, url='https://www.baidu.com'):
         # print('start')
         requests.get(url, headers=Setting.GbhSetting.HEADER,
                      proxies=proxies, timeout=timeout)
-        print('in')
+        # print('in')
     except requests.exceptions.ConnectTimeout as e:
         print('代理无效')
         return False
@@ -105,23 +105,23 @@ def send_request_get_response(*, url, if_use_proxy, proxies, header):
     return soup
 
 
-# def async_send_request_get_response(url, if_use_proxy, proxies, header,
-#                                     soup_list):
-#     '''
-#     为了使用协程（提高效率，采用异步模式：即发送request后，立刻发送下一个request，而不是等待response）
-#     对helper.send_request_get_response进行包装，添加一个额外参数soup_list
-#     ，存储beautifulsoup处理后的response
-#     :param url: request的地址
-#     :param if_use_proxy:
-#     :param proxies: 用来来接待代理网页的代理
-#     :param header:
-#     :param soup_list: 存储response
-#     :return: 无
-#     '''
-#     soup_list.append(
-#         send_request_get_response(url=url, if_use_proxy=if_use_proxy,
-#                                   proxies=proxies, header=header)
-#     )
+def async_send_request_get_response(url, if_use_proxy, proxies, header,
+                                    soup_list):
+    '''
+    为了使用协程（提高效率，采用异步模式：即发送request后，立刻发送下一个request，而不是等待response）
+    对helper.send_request_get_response进行包装，添加一个额外参数soup_list
+    ，存储beautifulsoup处理后的response
+    :param url: request的地址
+    :param if_use_proxy:
+    :param proxies: 用来来接待代理网页的代理
+    :param header:
+    :param soup_list: 存储response
+    :return: 无
+    '''
+    soup_list.append(
+        send_request_get_response(url=url, if_use_proxy=if_use_proxy,
+                                  proxies=proxies, header=header)
+    )
 
 
 if __name__ == '__main__':

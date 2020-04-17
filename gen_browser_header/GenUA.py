@@ -6,12 +6,7 @@ import logging
 import random
 import datetime
 
-# from self.SelfError import ResponseException
-# from src import self as e, self as self_enum, setting
 
-# import self.SelfError
-# import src.gen-browser-header.GenHeader as gen_header
-# import src.gen-browser-header.GenHeader as gen_header
 import self.SelfEnum as self_enum
 import helper.Helper as helper
 from setting import Setting as module_setting
