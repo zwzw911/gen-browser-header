@@ -3,19 +3,20 @@
 
 import GenUA as gen_ua
 import self.SelfEnum as self_enum
-import setting as setting
+from setting import Setting as setting
+
 
 def gen_header(setting, num=None):
     ua = []
     if num is not None:
         # 如果只需要一个header，优选返回firefox的ua
         if num == 1:
-            print(setting.browser_type)
+            # print(setting.browser_type)
             if self_enum.BrowserType.FireFox in setting.browser_type:
-                print('num =1 browse=ff')
+                # print('num =1 browse=ff')
                 ua += gen_ua.generate_firefox_ua(setting=setting, num=1)
             elif self_enum.BrowserType.Chrome in setting.browser_type:
-                print('num =1 browse=ch')
+                # print('num =1 browse=ch')
                 ua += gen_ua.generate_chrome_ua(setting=setting, num=1)
         # 如果需要多个header
         else:
@@ -49,7 +50,7 @@ def gen_header(setting, num=None):
 
 if __name__ == '__main__':
     cur_setting = setting.GbhSetting()
-    cur_setting.proxy_ip = ['87.254.212.121:8080']
+    cur_setting.proxy_ip = ['10.11.12.13:8090']
     cur_setting.browser_type = {self_enum.BrowserType.Chrome}
     cur_setting.firefox_ver = {'min': 74, 'max': 75}
     cur_setting.os_type = {self_enum.OsType.Win64}

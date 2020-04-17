@@ -7,7 +7,7 @@ import chardet
 import self.SelfException as self_exception
 import ssl
 
-import setting
+from setting import Setting
 
 
 def match_expect_type(value, expect_type):
@@ -42,7 +42,7 @@ def detect_if_need_proxy(url):
 
     # print(header)
     try:
-        r = requests.get(url, headers=setting.GbhSetting.HEADER, timeout=10)
+        r = requests.get(url, headers=Setting.GbhSetting.HEADER, timeout=10)
     except requests.exceptions.ConnectTimeout as e:
         print('不通过代理发起的请求超时，需要使用代理')
         return True
@@ -58,7 +58,7 @@ def detect_if_proxy_usable(proxies, timeout=5, url='https://www.baidu.com'):
     try:
         # ssl._create_default_https_context = ssl._create_unverified_context
         # print('start')
-        requests.get(url, headers=setting.GbhSetting.HEADER,
+        requests.get(url, headers=Setting.GbhSetting.HEADER,
                      proxies=proxies, timeout=timeout)
         print('in')
     except requests.exceptions.ConnectTimeout as e:

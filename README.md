@@ -1,14 +1,14 @@
-# get-browser-header
-get-browser-header create header for http(s) request, return a **list**    
+# gen-browser-header
+gen-browser-header create header for http(s) request, return a **list**    
 ### install
-`pip install get-browser-header`
+`pip install gen-browser-header`
 ### usage
-`import get-browser-header as gbh`    
+`import gen-browser-header as gbh`    
 `import setting`  
 `import self.SelfEnum as self_enum`  
 
 `cur_setting = setting.GbhSetting(`)  
-`cur_setting.proxy_ip = ['87.254.212.121:8080']`   
+`cur_setting.proxy_ip = ['10.11.12.13:8090']`   
 `cur_setting.browser_type = {self_enum.BrowserType.Chrome}`  
 `cur_setting.firefox_ver = {'min': 74, 'max': 75}`  
 `cur_setting.os_type = {self_enum.OsType.Win64}`  
@@ -17,14 +17,14 @@ get-browser-header create header for http(s) request, return a **list**
 
 `print(gen_header(setting=cur_setting, num=1))`
 
-### get-browser-header use gen_header to generate headers, which include 2 parameters: setting and num.  
+### gen-browser-header use gen_header to generate headers, which include 2 parameters: setting and num.  
 ### setting
-get-browser-header use setting to pass related parameters into function
+gen-browser-header use setting to pass related parameters into function
 , setting has below keys:  
 1. **proxy_ip**  
 type:***list***. For example, [\'10.18.20.71\']  
 default: **None**.   
-description: When get-browser-header try to generate
+description: When gen-browser-header try to generate
  chrome
  header, it
  need to

@@ -14,7 +14,7 @@ import datetime
 # import src.gen-browser-header.GenHeader as gen_header
 import self.SelfEnum as self_enum
 import helper.Helper as helper
-import setting as module_setting
+from setting import Setting as module_setting
 
 logging.basicConfig(level=logging.DEBUG)
 
@@ -227,7 +227,7 @@ if __name__ == '__main__':
         # print(datetime.datetime.now())
         # print(module_setting.GbhSetting['WIN_VER'])
         cur_setting = module_setting.GbhSetting()
-        cur_setting.proxy_ip = ['87.254.212.121:8080']
+        cur_setting.proxy_ip = ['10.11.12.13:8090']
         # print(cur_setting.proxy_ip)
         cur_setting.firefox_ver = {'min': 74, 'max': 75}
         cur_setting.os_type = {self_enum.OsType.Win64}

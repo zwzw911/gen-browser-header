@@ -199,7 +199,7 @@ if __name__ == '__main__':
     # print(set(a))
 # chrome的版本需要连接到https://www.chromedownloads.net/来读取，如果直接连接不行，那么会采用proxy_ip
 # 中的代理进行尝试
-# proxy_ip = ['87.254.212.121:8080']
+# proxy_ip = ['10.11.12.13:8090']
 # PROXYIES = [{'http:%s' % ip, 'https:%s' % ip} for ip in proxy_ip]
 
 
@@ -207,8 +207,8 @@ if __name__ == '__main__':
 
 # print(PROXYIES)
 # BASIC_PROXY = {
-#     'http': '87.254.212.121:8080',
-#     'https': '87.254.212.121:8080'
+#     'http': '10.11.12.13:8090',
+#     'https': '10.11.12.13:8090'
 # }
 
 # proxy_filter = {
