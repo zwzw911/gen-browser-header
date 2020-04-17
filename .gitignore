@@ -2,6 +2,7 @@
 .idea/
 __pycache__/
 .pytest_cache
+gen_browser_header/__pycache__/
 build/
 dist/
 gen_browser_header.egg-info
