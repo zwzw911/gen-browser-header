@@ -1,8 +1,8 @@
 #! /usr/bin/env python3
 # -*- coding:utf-8 -*-
 # from src.self import SelfEnum as self_enum
-import helper.Helper as helper
-import self.SelfEnum as self_enum
+import gen_browser_header.self.SelfEnum as self_enum
+import gen_browser_header.helper.Helper as helper
 import datetime
 
 CHROME_MAX_RELEASE_YEAR = datetime.date.today().year - 2008 + 1

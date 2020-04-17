@@ -4,10 +4,10 @@
 import requests
 from bs4 import BeautifulSoup
 import chardet
-import self.SelfException as self_exception
+import gen_browser_header.self.SelfException as self_exception
 import ssl
 
-from setting import Setting
+from gen_browser_header.setting import Setting
 
 
 def match_expect_type(value, expect_type):

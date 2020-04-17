@@ -1,13 +1,13 @@
 # gen_browser_header
 gen_browser_header create header for http(s) request, return a **list**    
 ### install
-`pip install gen_browser_header`
+`pip install gen-browser-header`
 ### usage
-`import gen_browser_header as gbh`    
-`import setting`  
-`import self.SelfEnum as self_enum`  
+`import gen_browser_header.main.GenHeader as gen_header`  
+`import gen_browser_header.setting.Setting as setting`    
+`import gen_browser_header.self.SelfEnum as self_enum`  
 
-`cur_setting = setting.GbhSetting(`)  
+`cur_setting = setting.GbhSetting()`  
 `cur_setting.proxy_ip = ['10.11.12.13:8090']`   
 `cur_setting.browser_type = {self_enum.BrowserType.Chrome}`  
 `cur_setting.firefox_ver = {'min': 74, 'max': 75}`  
@@ -15,7 +15,7 @@ gen_browser_header create header for http(s) request, return a **list**
 `cur_setting.chrome_type = {self_enum.ChromeType.Stable}`  
 `cur_setting.chrome_max_release_year = 1`  
 
-`print(gen_header(setting=cur_setting, num=1))`
+`print(gen_header(setting=cur_setting, num=10))`
 
 ### gen_browser_header use gen_header to generate headers, which include 2 parameters: setting and num.  
 ### setting

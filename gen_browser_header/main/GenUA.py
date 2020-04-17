@@ -6,10 +6,9 @@ import logging
 import random
 import datetime
 
-
-import self.SelfEnum as self_enum
-import helper.Helper as helper
-from setting import Setting as module_setting
+from  gen_browser_header.helper import Helper as helper
+import gen_browser_header.self.SelfEnum as self_enum
+from gen_browser_header.setting import Setting as module_setting
 
 logging.basicConfig(level=logging.DEBUG)
 
@@ -118,7 +117,7 @@ def get_chrome_ver(setting, url):
     if not if_use_proxy:
         if setting.proxies is None:
             raise Exception("setting没有设置任何代理，无法连接到https://www.chromedownloads\
-.net/获得chrome版本")
+.net获得chrome版本")
     # print(setting.proxies)
     valid_proxies = None
     for single_proxies in setting.proxies:
@@ -130,7 +129,7 @@ def get_chrome_ver(setting, url):
             break
 
     if valid_proxies is None:
-        raise Exception('尝试了所有代理，都无法连接https://www.chromedownloads')
+        raise Exception('尝试了所有代理，都无法连接https://www.chromedownloads.net')
 
     soup = helper.send_request_get_response(url=url, if_use_proxy=if_use_proxy,
                                             proxies=valid_proxies,
@@ -199,7 +198,7 @@ def generate_chrome_ua(setting, num=None):
     # for single_os_bit in os_bit:
     # if 'Win' in single_os_bit:
     chrome_ua = ['Mozilla/5.0 (%s; WOW%s) AppleWebKit/537.36 (KHTML, \
-                 like Gecko) Chrome/%s Safari/537.36' %
+like Gecko) Chrome/%s Safari/537.36' %
                  (winver, osbit, chromever)
                  for osbit in os_bit
                  for winver in setting.WIN_VER
@@ -222,7 +221,7 @@ if __name__ == '__main__':
         # print(datetime.datetime.now())
         # print(module_setting.GbhSetting['WIN_VER'])
         cur_setting = module_setting.GbhSetting()
-        cur_setting.proxy_ip = ['10.11.12.13:8090']
+        cur_setting.proxy_ip = ['10.11.12.13:9090']
         # print(cur_setting.proxy_ip)
         cur_setting.firefox_ver = {'min': 74, 'max': 75}
         cur_setting.os_type = {self_enum.OsType.Win64}
@@ -230,8 +229,9 @@ if __name__ == '__main__':
         cur_setting.chrome_max_release_year = 1
         # print(cur_setting.firefox_ver)
         result = generate_chrome_ua(setting=cur_setting)
+
+        result += generate_firefox_ua(setting=cur_setting)
         print(result)
-        # result = generate_firefox_ua(setting=cur_setting)
         # print(generate_chrome_url_base_on_type(setting=cur_setting))
     except Exception as e:
         print(e)
