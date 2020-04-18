@@ -22,22 +22,27 @@ class GbhSetting(object):
         'Connection': 'keep-alive'}
 
     # _proxy_ip: 默认None。设置必须是list，用来生成代理，连接到无法直连的网站
-    # _header_no_ua: dict。用来生成header的模板，填入ua，即可生成header
+    # _firefox_header_no_ua: dict。用来生成header的模板，填入ua，即可生成header
     # _browser_type: set。产生哪些浏览器的ua，当前支持firefox和chrome
     # _firefox_ver： dict。产生的ua对应的ff的版本，有2个key，min和max
     # _chrome_type： set。chrome有4类型，stable/dev/Canary/beta，产生的ua是哪种类型
     # _chrome_max_release_year： int。产生的chrome最远是几年前（太老的版本不使用
     # _os_type: set。哪种操作系统上生成的ua。当前支持win32和win64
-    __slots__ = ('_proxy_ip',  '_header_no_ua', '_browser_type',
-                 '_firefox_ver', '_chrome_type',
+    __slots__ = ('_proxy_ip',  '_firefox_header_no_ua', '_chrome_header_no_ua',
+                 '_browser_type', '_firefox_ver', '_chrome_type',
                  '_chrome_max_release_year', '_os_type')
 
     def __init__(self):
         self._proxy_ip = None
-        self._header_no_ua = {
+        self._firefox_header_no_ua = {
         'Accept': 'text/html, application/xhtml+xml, application/xml;q = 0.9, image/webp, image/apng, */*;q = 0.8, application/signed-exchange;v = b3',
         'Accept-Encoding': 'gzip, deflate, br',
         'Accept-Language': 'zh-CN,zh;q=0.8,zh-TW;q=0.7,zh-HK;q=0.5,en-US;q=0.3,en;q=0.2',
+        'Connection': 'keep-alive'}
+        self._chrome_header_no_ua = {
+        'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.9',
+        'Accept-Encoding': 'gzip, deflate',
+        'Accept-Language': 'zh-CN,zh;q=0.9',
         'Connection': 'keep-alive'}
         # self._proxies = None
         self._browser_type = {self_enum.BrowserType.FireFox}
@@ -58,13 +63,22 @@ class GbhSetting(object):
 
 
     @property
-    def header_no_ua(self):
-        return self._header_no_ua
+    def firefox_header_no_ua(self):
+        return self._firefox_header_no_ua
 
-    @header_no_ua.setter
-    def header_no_ua(self,value):
+    @firefox_header_no_ua.setter
+    def firefox_header_no_ua(self, value):
         # 偷懒，不检查格式了
-        self._header_no_ua = value
+        self._firefox_header_no_ua = value
+
+    @property
+    def chrome_header_no_ua(self):
+        return self._chrome_header_no_ua
+
+    @chrome_header_no_ua.setter
+    def chrome_header_no_ua(self, value):
+        # 偷懒，不检查格式了
+        self._chrome_header_no_ua = value
 
     @property
     def browser_type(self):

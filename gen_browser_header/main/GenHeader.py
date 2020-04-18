@@ -40,7 +40,12 @@ def gen_header(setting, num=None):
         # setting.header_no_ua['User-Agent'] = single_ua
         # tmp_header = setting.header_no_ua
         # tmp_header['User-Agent'] = single_ua
-        header.append({**setting.header_no_ua, **{'User-Agent': single_ua}})
+        if 'Firefox' in single_ua:
+            header.append({**setting.firefox_header_no_ua,
+                           **{'User-Agent': single_ua}})
+        elif 'Chrome' in single_ua:
+            header.append({**setting.chrome_header_no_ua,
+                           **{'User-Agent': single_ua}})
 
     return header
 
@@ -50,7 +55,7 @@ if __name__ == '__main__':
 
     cur_setting = setting.GbhSetting()
     cur_setting.proxy_ip = ['10.11.12.13:9090']
-    cur_setting.browser_type = {self_enum.BrowserType.All}
+    cur_setting.browser_type = {self_enum.BrowserType.FireFox}
     cur_setting.firefox_ver = {'min': 74, 'max': 75}
     cur_setting.os_type = {self_enum.OsType.Win64}
     cur_setting.chrome_type = {self_enum.ChromeType.Stable}

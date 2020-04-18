@@ -112,26 +112,27 @@ def get_chrome_ver(setting, url):
     chrome_ver = set({})
     current_year = datetime.date.today().year
     # print(current_year)
-    if_use_proxy = helper.detect_if_need_proxy(url)
-    # print(if_use_proxy)
-    if not if_use_proxy:
+    if_need_proxy = helper.detect_if_need_proxy(url)
+    # print(if_need_proxy)
+    valid_proxies = None
+    if if_need_proxy:
         if setting.proxies is None:
             raise Exception("setting没有设置任何代理，无法连接到https://www.chromedownloads\
 .net获得chrome版本")
     # print(setting.proxies)
-    valid_proxies = None
-    for single_proxies in setting.proxies:
-        tmp = helper.detect_if_proxy_usable(proxies=single_proxies, url=url)
-        # print(tmp)
-        if tmp:
-            # print(single_proxies)
-            valid_proxies = single_proxies
-            break
 
-    if valid_proxies is None:
-        raise Exception('尝试了所有代理，都无法连接https://www.chromedownloads.net')
+        for single_proxies in setting.proxies:
+            tmp = helper.detect_if_proxy_usable(proxies=single_proxies, url=url)
+            # print(tmp)
+            if tmp:
+                # print(single_proxies)
+                valid_proxies = single_proxies
+                break
 
-    soup = helper.send_request_get_response(url=url, if_use_proxy=if_use_proxy,
+        if valid_proxies is None:
+            raise Exception('尝试了所有代理，都无法连接https://www.chromedownloads.net')
+    # print(valid_proxies)
+    soup = helper.send_request_get_response(url=url, if_use_proxy=if_need_proxy,
                                             proxies=valid_proxies,
                                             header=setting.HEADER)
     # print(soup)
@@ -165,7 +166,7 @@ def generate_chrome_ua(setting, num=None):
     if num is not None:
         # 如果只需要返回一个，直接生成
         if num == 1:
-            return ['Mozilla/5.0 (Windows NT 6.0; WOW64) AppleWebKit/537.36 \
+            return ['Mozilla/5.0 (Windows NT 6.0; Win64; x64) AppleWebKit/537.36 \
 (KHTML, like Gecko) Chrome/79.0.3945.117 Safari/537.36']
 
     try:
@@ -186,18 +187,27 @@ def generate_chrome_ua(setting, num=None):
         # 获得的version加入chrome_ver
         chrome_ver = chrome_ver | tmp_chrome_ver
     # logging.debug(chrome_ver)
-    os_bit = set()
+    os_bit = set([])
     if self_enum.OsType.All in setting.os_type:
-        os_bit = {32, 64}
-
-    if self_enum.OsType.Win32 in setting.os_type:
-        os_bit.add(32)
-    if self_enum.OsType.Win64 in setting.os_type:
-        os_bit.add(64)
+        os_bit = {'Win32; x32', 'Win64; x64'}
+    else:
+        if self_enum.OsType.Win32 in setting.os_type:
+            os_bit.add('Win32; x32')
+        if self_enum.OsType.Win64 in setting.os_type:
+            os_bit.add('Win64; x64')
+    # os_bit = set()
+    # if self_enum.OsType.All in setting.os_type:
+    #     os_bit = {32, 64}
+    #
+    # if self_enum.OsType.Win32 in setting.os_type:
+    #     os_bit.add(32)
+    # if self_enum.OsType.Win64 in setting.os_type:
+    #     os_bit.add(64)
     # logging.debug(os_bit)
     # for single_os_bit in os_bit:
     # if 'Win' in single_os_bit:
-    chrome_ua = ['Mozilla/5.0 (%s; WOW%s) AppleWebKit/537.36 (KHTML, \
+    # Mozilla/5.0 (Windows NT 6.1; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/81.0.4044.92 Safari/537.36
+    chrome_ua = ['Mozilla/5.0 (%s; %s) AppleWebKit/537.36 (KHTML, \
 like Gecko) Chrome/%s Safari/537.36' %
                  (winver, osbit, chromever)
                  for osbit in os_bit

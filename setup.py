@@ -6,7 +6,7 @@ with open("README.md", "r") as fh:
 setuptools.setup(
     name="gen_browser_header", # Replace with your own
     # username
-    version="0.0.9",
+    version="0.0.10",
     author="zwzw911",
     author_email="zwzw911110@163.com",
     description="A package to generate http(s) request header",
