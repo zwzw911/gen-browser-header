@@ -5,4 +5,4 @@ __pycache__/
 gen_browser_header/__pycache__/
 build/
 dist/
-gen_browser_header.egg-info
+gen_browser_header.egg-info/

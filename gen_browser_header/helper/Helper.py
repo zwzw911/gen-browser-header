@@ -37,6 +37,31 @@ def all_values_preDefined(values, defined_enum):
     return len(r) == 0
 
 
+def enum_set_check(value, enum_type):
+    '''
+    检测value是否为set（防止重复），且其中每个值都是enum_type中成员，最后，如果有value中有all，替换所有其他成员
+    :param value: 待检查的值
+    :param enum_type: enum的定义
+    :return: None（有错误）/set（原始值，或者修改过的值（All））
+    '''
+    # value是set
+    if not match_expect_type(value, 'set'):
+        # print('not set')
+        return
+    # value中每个值是合法的enum成员
+    if not all_values_preDefined(values=value, defined_enum=enum_type):
+        # print('not valid')
+        return
+    # value中有all，则把除all之外的成员都设置上去
+    # print(enum_type['All'] in value)
+    if enum_type['All'] in value:
+        # print(enum_type.__members__.items())
+        return set([enum_type[k] for k, v in enum_type.__members__.items() if
+                k != 'All'])
+    else:
+        return value
+
+
 def detect_if_need_proxy(url):
     # header = gen_header.gen_limit_header(1)[0]
 

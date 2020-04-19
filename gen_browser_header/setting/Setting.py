@@ -86,22 +86,27 @@ class GbhSetting(object):
 
     @browser_type.setter
     def browser_type(self, value):
-        # value是set
-        if not helper.match_expect_type(value, 'set'):
-            # print('not set')
+        r = helper.enum_set_check(value, self_enum.BrowserType)
+        if r is None:
             return
-        # value中每个值是合法的browser_type
-        if not helper.all_values_preDefined(values=value,
-                                            defined_enum=self_enum.BrowserType):
-            # print('not valid')
-            return
-        # value中有all，则只设置all
-        if self_enum.BrowserType.All in value:
-            self._browser_type = {self_enum.BrowserType.Chrome,
-                                  self_enum.BrowserType.FireFox}
-            return
-        # print(value)
-        self._browser_type = value
+        else:
+            self._browser_type = r
+        # # value是set
+        # if not helper.match_expect_type(value, 'set'):
+        #     # print('not set')
+        #     return
+        # # value中每个值是合法的browser_type
+        # if not helper.all_values_preDefined(values=value,
+        #                                     defined_enum=self_enum.BrowserType):
+        #     # print('not valid')
+        #     return
+        # # value中有all，则只设置all
+        # if self_enum.BrowserType.All in value:
+        #     self._browser_type = {self_enum.BrowserType.Chrome,
+        #                           self_enum.BrowserType.FireFox}
+        #     return
+        # # print(value)
+        # self._browser_type = value
 
     @property
     def proxy_ip(self):
@@ -135,24 +140,29 @@ class GbhSetting(object):
 
     @chrome_type.setter
     def chrome_type(self, value):
-        # value是set
-        if not helper.match_expect_type(value, 'set'):
-            # print('not set')
+        r = helper.enum_set_check(value, self_enum.ChromeType)
+        if r is None:
             return
-        # value中每个值是合法的chrome_type
-        if not helper.all_values_preDefined(values=value,
-                                            defined_enum=self_enum.ChromeType):
-            # print('not valid')
-            return
-        # value中有all，则只设置all
-        if self_enum.ChromeType.All in value:
-            self._chrome_type = {self_enum.ChromeType.Stable,
-                                 self_enum.ChromeType.Beta,
-                                 self_enum.ChromeType.Canary,
-                                 self_enum.ChromeType.Dev}
-            return
-
-        self._chrome_type = value
+        else:
+            self._chrome_type = r
+        # # value是set
+        # if not helper.match_expect_type(value, 'set'):
+        #     # print('not set')
+        #     return
+        # # value中每个值是合法的chrome_type
+        # if not helper.all_values_preDefined(values=value,
+        #                                     defined_enum=self_enum.ChromeType):
+        #     # print('not valid')
+        #     return
+        # # value中有all，则只设置all
+        # if self_enum.ChromeType.All in value:
+        #     self._chrome_type = {self_enum.ChromeType.Stable,
+        #                          self_enum.ChromeType.Beta,
+        #                          self_enum.ChromeType.Canary,
+        #                          self_enum.ChromeType.Dev}
+        #     return
+        #
+        # self._chrome_type = value
 
     @property
     def chrome_max_release_year(self):
@@ -177,27 +187,41 @@ class GbhSetting(object):
 
     @os_type.setter
     def os_type(self, value):
-        # 必须是set，否则直接返回，保留原始设置
-        if not helper.match_expect_type(value, 'set'):
+        r = helper.enum_set_check(value, self_enum.OsType)
+        if r is None:
             return
-        # set中每个值都是self_enum.OsType中定义过的, 否则直接返回，保留原始设置
-        if not helper.all_values_preDefined(values=value,
-                                            defined_enum=self_enum.OsType):
-            return
-        # 如果有self_enum.OsType.ALL，则只保留ALL，其他删除
-        if self_enum.OsType.All in value:
-            self._os_type = {self_enum.OsType.Win32, self_enum.OsType.Win64}
-            return
-
-        self._os_type = value
+        else:
+            self._os_type = r
+        # # 必须是set，否则直接返回，保留原始设置
+        # if not helper.match_expect_type(value, 'set'):
+        #     return
+        # # set中每个值都是self_enum.OsType中定义过的, 否则直接返回，保留原始设置
+        # if not helper.all_values_preDefined(values=value,
+        #                                     defined_enum=self_enum.OsType):
+        #     return
+        # # 如果有self_enum.OsType.ALL，则只保留ALL，其他删除
+        # if self_enum.OsType.All in value:
+        #     self._os_type = {self_enum.OsType.Win32, self_enum.OsType.Win64}
+        #     return
+        #
+        # self._os_type = value
 
 
 
 if __name__ == '__main__':
-    pass
+
     # print(GbhSetting['WIN_VER'])
-    # st = GbhSetting()
-    #
+    st = GbhSetting()
+    # st.browser_type = {self_enum.BrowserType.All}
+    # print(st.browser_type)
+    # st.chrome_type = {self_enum.ChromeType.All}
+    # print(st.chrome_type)
+    # st.chrome_type = {self_enum.ChromeType.Stable}
+    # print(st.chrome_type)
+    # st.os_type = {self_enum.OsType.All}
+    # print(st.os_type)
+    # st.os_type = {self_enum.OsType.Win32}
+    # print(st.os_type)
     # print(st.proxy_ip)
     # print(st.proxies)
     # st.firefox_ver = {'min':72,'max':75}
@@ -206,79 +230,4 @@ if __name__ == '__main__':
     # print(st.WIN_VER)
     # print(st.HEADER)
 
-    # def is_odd(n):
-    #     return n % 2 == 1
-    #
-    # a=filter(is_odd, {1, 2, 4, 5, 6, 9, 10, 15})
-    # print(set(a))
-# chrome的版本需要连接到https://www.chromedownloads.net/来读取，如果直接连接不行，那么会采用proxy_ip
-# 中的代理进行尝试
-# proxy_ip = ['10.11.12.13:8090']
-# PROXYIES = [{'http:%s' % ip, 'https:%s' % ip} for ip in proxy_ip]
 
-
-
-
-# print(PROXYIES)
-# BASIC_PROXY = {
-#     'http': '10.11.12.13:8090',
-#     'https': '10.11.12.13:8090'
-# }
-
-# proxy_filter = {
-#     'proxy_type': [self_enum.ProxyType.All],
-#     'protocol': [self_enum.ProtocolType.HTTP],
-#     # https://proxy-list.org中代理来自全球，使用country进行过滤
-#     'country': [self_enum.Country.All],
-# }
-#
-# # where to save generated free proxy
-# STOREAGE_TYPE = 'REDIS'
-# STOREAGE = {
-#     'MYSQL': {
-#         'host': '127.0.0.1',
-#         'port': 3306,
-#         'user': 'root',
-#         'pwd': '1234',
-#         'db_name': 'db_proxy',
-#         'tbl_name': 'tbl_proxy',
-#         'charset': 'utf8mb4'
-#     },
-#     'REDIS': {
-#         'host': '127.0.0.1',
-#         'port': 6379,
-#         'db': 0,  # 0~15
-#         'pwd': None
-#     },
-# }
-#
-# misc = {
-#     'valid_time': 86400, # 获得proxy后，有效时间。 redis中，使用expire（TTL）， mysql中，设置并读取duetime后比较
-# }
-# # url: where to get free proxy
-# SITE = [
-#         # {
-#         #     # wn: https代理        wt: http代理    透明/高匿混合在同一页面
-#         #     # socks代理验证时间太长，所以不采用
-#         #     'urls': ['https://www.xicidaili.com/%s/%s' % (m, n) for m in [
-#         #         'wn', 'wt'] for n in range(1, 2)],
-#         # },
-#         # {
-#         #     # inha：国内高匿   intr：国内透明
-#         #     # kuaidaili只有http代理
-#         #     'urls': ['https://www.kuaidaili.com/free/%s/%s' % (m, n) for m in
-#         #              ['inha', 'intr'] for n in range(1, 2)]
-#         # },
-#         {
-#             # proxy-list只有http/https代理
-#             'urls': ['https://proxy-list.org/english/index.php?p=%s' % m for m
-#                      in range(1, 2)]
-#         },
-#         # {
-#         #     # hidemy.name支持所有protocol，2种type，和国家
-#         #     'urls': ['https://hidemy.name/en/proxy-list/?start=%s#list' %
-#         #              str((m-1)*64) if m > 1 else
-#         #              'https://hidemy.name/en/proxy-list/?start=1#list'
-#         #              for m in range(1, 2)]
-#         # }
-# ]
