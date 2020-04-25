@@ -1,5 +1,19 @@
 # gen_browser_header
-gen_browser_header create header for http(s) request, return a **list**    
+gen_browser_header create header for http(s) request, return a **list** like    
+[{
+	'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8',
+	'Accept-Encoding': '*',
+	'Accept-Language': 'zh-CN,zh;q=0.8,zh-TW;q=0.7,zh-HK;q=0.5,en-US;q=0.3,en;q=0.2',
+	'Connection': 'keep-alive',
+	'User-Agent': 'Mozilla/5.0 (Windows NT 6.0; Win64; x64; rv:74.0) Gecko/20100101 Firefox/74.0'
+},     
+{
+	'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.9',
+	'Accept-Encoding': '*',
+	'Accept-Language': 'zh-CN,zh;q=0.9',
+	'Connection': 'keep-alive',
+	'User-Agent': 'Mozilla/5.0 (Windows NT 6.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/80.0.3987.149 Safari/537.36'
+}       
 ### install
 `pip install gen-browser-header`
 ### usage
@@ -22,7 +36,7 @@ gen_browser_header create header for http(s) request, return a **list**
 gen_browser_header use setting to pass related parameters into function
 , setting has below keys:  
 1. **proxy_ip**  
-type:***list***. For example, [\'10.18.20.71\']  
+type:***list***. For example, [\'10.18.20.71:8080\']  
 default: **None**.   
 description: When gen_browser_header try to generate
  chrome

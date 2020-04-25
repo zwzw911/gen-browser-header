@@ -13,13 +13,7 @@ class GbhSetting(object):
     WIN_VER = ['Windows NT 6.0', 'Windows NT 6.1', 'Windows NT 6.2',
                'Windows NT 6.3', 'Windows NT 10.0']
 
-    # 如果只是用来判断是否需要使用代理，则无需随机生成header，使用固定的header即可
-    HEADER = {
-        'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:74.0) Gecko/20100101 Firefox/74.0',
-        'Accept': 'text/html, application/xhtml+xml, application/xml;q = 0.9, image/webp, image/apng, */*;q = 0.8, application/signed-exchange;v = b3',
-        'Accept-Encoding': 'gzip, deflate, br',
-        'Accept-Language': 'zh-CN,zh;q=0.8,zh-TW;q=0.7,zh-HK;q=0.5,en-US;q=0.3,en;q=0.2',
-        'Connection': 'keep-alive'}
+
 
     # _proxy_ip: 默认None。设置必须是list，用来生成代理，连接到无法直连的网站
     # _firefox_header_no_ua: dict。用来生成header的模板，填入ua，即可生成header
@@ -35,13 +29,15 @@ class GbhSetting(object):
     def __init__(self):
         self._proxy_ip = None
         self._firefox_header_no_ua = {
-        'Accept': 'text/html, application/xhtml+xml, application/xml;q = 0.9, image/webp, image/apng, */*;q = 0.8, application/signed-exchange;v = b3',
-        'Accept-Encoding': 'gzip, deflate, br',
+        'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8',
+        # 'Accept-Encoding': 'gzip, deflate, br',
+        'Accept-Encoding': '*',  # 某些网站，及时可以使用br，也需要设置成*，否则返回乱码
         'Accept-Language': 'zh-CN,zh;q=0.8,zh-TW;q=0.7,zh-HK;q=0.5,en-US;q=0.3,en;q=0.2',
         'Connection': 'keep-alive'}
         self._chrome_header_no_ua = {
         'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.9',
-        'Accept-Encoding': 'gzip, deflate',
+        # 'Accept-Encoding': 'gzip, deflate',
+        'Accept-Encoding': '*',  # 某些网站，及时可以使用br，也需要设置成*，否则返回乱码
         'Accept-Language': 'zh-CN,zh;q=0.9',
         'Connection': 'keep-alive'}
         # self._proxies = None

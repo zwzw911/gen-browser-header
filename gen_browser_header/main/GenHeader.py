@@ -55,7 +55,7 @@ if __name__ == '__main__':
 
     cur_setting = setting.GbhSetting()
     cur_setting.proxy_ip = ['10.11.12.13:9090']
-    cur_setting.browser_type = {self_enum.BrowserType.FireFox}
+    cur_setting.browser_type = {self_enum.BrowserType.All}
     cur_setting.firefox_ver = {'min': 74, 'max': 75}
     cur_setting.os_type = {self_enum.OsType.Win64}
     cur_setting.chrome_type = {self_enum.ChromeType.Stable}

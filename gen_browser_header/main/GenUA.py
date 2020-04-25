@@ -9,7 +9,7 @@ import datetime
 from  gen_browser_header.helper import Helper as helper
 import gen_browser_header.self.SelfEnum as self_enum
 from gen_browser_header.setting import Setting as module_setting
-
+import gen_browser_header.self.SelfConstant as self_constant
 logging.basicConfig(level=logging.DEBUG)
 
 
@@ -132,28 +132,29 @@ def get_chrome_ver(setting, url):
         if valid_proxies is None:
             raise Exception('尝试了所有代理，都无法连接https://www.chromedownloads.net')
     # print(valid_proxies)
-    soup = helper.send_request_get_response(url=url, if_use_proxy=if_need_proxy,
+    r = helper.send_request_get_response(url=url, if_use_proxy=if_need_proxy,
                                             proxies=valid_proxies,
-                                            header=setting.HEADER)
+                                            header=self_constant.HEADER)
     # print(soup)
-    records = soup.select('div.download_content>ul.fix>'
-                          'li[class!=divide-line]')
+    records = r.html.find('div.download_content>ul.fix>'
+                          'li[class!=divide-line]', first=False)
 
     for single_record in records:
-        version_element_list = single_record.select('span.version_title>a')
-        release_data_element_list = single_record.select(
+        # print(single_record.text)
+        version_element_list = single_record.find('span.version_title>a')
+        release_data_element_list = single_record.find(
             'span.release_date')
         # 第一个li是标题，需要忽略
         if len(version_element_list) == 0:
             continue
         # 判断版本时间
         version_release_year = \
-            int(release_data_element_list[0].string.split('-')[0])
+            int(release_data_element_list[0].text.split('-')[0])
         if current_year - version_release_year + 1 > \
                 setting.chrome_max_release_year:
             continue
 
-        chrome_ver.add(version_element_list[0].string.split('_')[3])
+        chrome_ver.add(version_element_list[0].text.split('_')[3])
     return chrome_ver
 
 
@@ -240,7 +241,7 @@ if __name__ == '__main__':
         # print(cur_setting.firefox_ver)
         result = generate_chrome_ua(setting=cur_setting)
 
-        result += generate_firefox_ua(setting=cur_setting)
+        # result += generate_firefox_ua(setting=cur_setting)
         print(result)
         # print(generate_chrome_url_base_on_type(setting=cur_setting))
     except Exception as e:
