@@ -63,4 +63,4 @@ if __name__ == '__main__':
     # print(cur_setting.browser_type)
     r = gen_header(setting=cur_setting)
     # print([item['User-Agent'] for item in r])
-    print(gen_header(setting=cur_setting))
+    print(r)

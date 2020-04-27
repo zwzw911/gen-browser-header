@@ -9,3 +9,5 @@ HEADER = {
     'Accept-Encoding': '*',  # 某些网站，及时可以使用br，也需要设置成*，否则返回乱码
     'Accept-Language': 'zh-CN,zh;q=0.8,zh-TW;q=0.7,zh-HK;q=0.5,en-US;q=0.3,en;q=0.2',
     'Connection': 'keep-alive'}
+
+CHROME_BASE_URL ='https://www.chromedownloads.net/'

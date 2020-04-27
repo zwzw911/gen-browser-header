@@ -6,10 +6,11 @@ import logging
 import random
 import datetime
 
-from  gen_browser_header.helper import Helper as helper
+from gen_browser_header.helper import Helper as helper
 import gen_browser_header.self.SelfEnum as self_enum
 from gen_browser_header.setting import Setting as module_setting
 import gen_browser_header.self.SelfConstant as self_constant
+
 logging.basicConfig(level=logging.DEBUG)
 
 
@@ -93,52 +94,52 @@ def generate_chrome_url_base_on_type(setting):
         self_enum.OsType.Win64: 'chrome64win'
     }
 
-    base_url = 'https://www.chromedownloads.net/'
     result = []
     for single_os_type in setting.os_type:
         for single in setting.chrome_type:
             part_url = os_dict[single_os_type] + '-' + single.name.lower()
-            result.append(base_url + part_url)
+            result.append(self_constant.CHROME_BASE_URL + part_url)
 
     return result
 
 
-def get_chrome_ver(setting, url):
+def get_chrome_ver(setting, url, if_need_proxy, proxies):
     '''
     :param setting: setting的实例
     :param url: 获取chrome版本的url
+    :param if_need_proxy:连接到https://www.chromedownloads.net是否需要代理
+    :param proxies: 如果需要使用代理，可用的代理
     :return: set
     '''
     chrome_ver = set({})
     current_year = datetime.date.today().year
     # print(current_year)
-    if_need_proxy = helper.detect_if_need_proxy(url)
+
     # print(if_need_proxy)
-    valid_proxies = None
-    if if_need_proxy:
-        if setting.proxies is None:
-            raise Exception("setting没有设置任何代理，无法连接到https://www.chromedownloads\
-.net获得chrome版本")
-    # print(setting.proxies)
-
-        for single_proxies in setting.proxies:
-            tmp = helper.detect_if_proxy_usable(proxies=single_proxies, url=url)
-            # print(tmp)
-            if tmp:
-                # print(single_proxies)
-                valid_proxies = single_proxies
-                break
-
-        if valid_proxies is None:
-            raise Exception('尝试了所有代理，都无法连接https://www.chromedownloads.net')
+    #     valid_proxies = None
+    #     if if_need_proxy:
+    #         if setting.proxies is None:
+    #             raise Exception("setting没有设置任何代理，无法连接到https://www.chromedownloads\
+    # .net获得chrome版本")
+    #     # print(setting.proxies)
+    #
+    #         for single_proxies in setting.proxies:
+    #             tmp = helper.detect_if_proxy_usable(proxies=single_proxies, url=url)
+    #             # print(tmp)
+    #             if tmp:
+    #                 # print(single_proxies)
+    #                 valid_proxies = single_proxies
+    #                 break
+    #
+    #         if valid_proxies is None:
+    #             raise Exception('尝试了所有代理，都无法连接https://www.chromedownloads.net')
     # print(valid_proxies)
     r = helper.send_request_get_response(url=url, if_use_proxy=if_need_proxy,
-                                            proxies=valid_proxies,
-                                            header=self_constant.HEADER)
-    # print(soup)
+                                         proxies=proxies, header=self_constant.HEADER)
+    # print(r.html)
     records = r.html.find('div.download_content>ul.fix>'
                           'li[class!=divide-line]', first=False)
-
+    # print(records)
     for single_record in records:
         # print(single_record.text)
         version_element_list = single_record.find('span.version_title>a')
@@ -181,9 +182,30 @@ def generate_chrome_ua(setting, num=None):
     # 检测是否需要代理，如果需要，设置代理
     # if_use_proxy = helper.detect_if_need_proxy(version_url[0])
     # print(version_url)
+    if_need_proxy = helper.detect_if_need_proxy(self_constant.CHROME_BASE_URL)
+    valid_proxies = None
+    if if_need_proxy:
+        if setting.proxies is None:
+            raise Exception("setting没有设置任何代理，无法连接到https://www.chromedownloads\
+    .net获得chrome版本")
+        # print(setting.proxies)
+
+        for single_proxies in setting.proxies:
+            tmp = helper.detect_if_proxy_usable(proxies=single_proxies,
+                                                url=self_constant.CHROME_BASE_URL)
+            # print(tmp)
+            if tmp:
+                # print(single_proxies)
+                valid_proxies = single_proxies
+                break
+
+        if valid_proxies is None:
+            raise Exception('尝试了所有代理，都无法连接https://www.chromedownloads.net')
+
     chrome_ver = set({})
     for single_url in version_url:
-        tmp_chrome_ver = get_chrome_ver(url=single_url, setting=setting)
+        tmp_chrome_ver = get_chrome_ver(url=single_url, setting=setting,
+                                        if_need_proxy=if_need_proxy, proxies=valid_proxies)
         # logging.debug(tmp_chrome_ver)
         # 获得的version加入chrome_ver
         chrome_ver = chrome_ver | tmp_chrome_ver
@@ -196,18 +218,7 @@ def generate_chrome_ua(setting, num=None):
             os_bit.add('Win32; x32')
         if self_enum.OsType.Win64 in setting.os_type:
             os_bit.add('Win64; x64')
-    # os_bit = set()
-    # if self_enum.OsType.All in setting.os_type:
-    #     os_bit = {32, 64}
-    #
-    # if self_enum.OsType.Win32 in setting.os_type:
-    #     os_bit.add(32)
-    # if self_enum.OsType.Win64 in setting.os_type:
-    #     os_bit.add(64)
-    # logging.debug(os_bit)
-    # for single_os_bit in os_bit:
-    # if 'Win' in single_os_bit:
-    # Mozilla/5.0 (Windows NT 6.1; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/81.0.4044.92 Safari/537.36
+
     chrome_ua = ['Mozilla/5.0 (%s; %s) AppleWebKit/537.36 (KHTML, \
 like Gecko) Chrome/%s Safari/537.36' %
                  (winver, osbit, chromever)

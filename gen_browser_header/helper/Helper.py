@@ -5,7 +5,7 @@ import requests
 from requests_html import HTMLSession
 from requests_html import AsyncHTMLSession
 
-from bs4 import BeautifulSoup
+# from bs4 import BeautifulSoup
 import chardet
 import gen_browser_header.self.SelfException as self_exception
 import ssl
@@ -137,24 +137,7 @@ def send_request_get_response(url, if_use_proxy, proxies, header):
         raise self_exception.ResponseException(r.status_code)
 
     return r
-    # raise e.ResponseException(200)
-    # logging.debug(chardet.detect(r.content)['encoding'])
-    # logging.debug(r.text)
-    # encoding = chardet.detect(r.content)['encoding']
-    # if encoding == 'utf-8':
-    #     soup = BeautifulSoup(r.text, 'lxml')
-    # else:
-    #     soup = BeautifulSoup(r.text, 'lxml', from_encoding=encoding)
-    # if force_render:
-    #     r.html.render()
-    # return r
 
-
-# async def async_send_request_get_response_test(url, timeout):
-#     # return await asession.get(url)
-#     # r = await asession.get(url, headers=self_constant.HEADER, timeout=2)
-#     return await asession.get(url, headers=self_constant.HEADER, timeout=timeout)
-#     # return await r.html.render()
 
 async def async_send_request_get_response(url, if_use_proxy=False, proxies=None,
                                           header=self_constant.HEADER):
@@ -174,53 +157,8 @@ async def async_send_request_get_response(url, if_use_proxy=False, proxies=None,
     else:
         return await asession.get(url, headers=header, timeout=2)
 
-    # r = await asession.get(url, headers=header, timeout=2)
-    # return r
-    # if force_render:
-    #     r.html.render()
-    # return r
 
 
 if __name__ == '__main__':
     pass
-    # import gen_browser_header.setting.Setting as setting
 
-    # r = send_request_get_response(url='https://www.baidu.com',
-    #                               if_use_proxy=False, proxies={},
-    #                               header=setting.GbhSetting.HEADER)
-    # print(r.html.text)
-
-    # urls = ['https://www.baidu.com', 'https://www.sina.com.cn']
-    # task = []
-    # for url in urls:
-    #     task.append(async_send_request_get_response(url='https://www.baidu.com',
-    #                                                 if_use_proxy=False,
-    #                                                 proxies={},
-    #                                                 header=setting.GbhSetting.HEADER,
-    #                                                 force_render=True))
-
-    # rs = asession.run(*task)
-    # to=5
-    # rs = asession.run(*[lambda url=url, timeout=to: async_send_request_get_response_test(url,timeout)
-    #                     for url in urls])
-    # # rs = asession.run(*[async_send_request_get_response_test(url='https://www.baidu.com',timeout=5)])
-    # for s_r in rs:
-    #     print(s_r.html.url)
-
-    # async def get_pythonorg():
-    #     r = await asession.get('https://www.sina.com.cn/')
-    #     return r
-    #
-    #
-    # async def get_reddit():
-    #     r = await asession.get('https://www.baidu.com/')
-    #     return r
-    #
-    #
-    # async def get_google():
-    #     r = await asession.get('https://www.sohu.com/')
-    #     return r
-    #
-    #
-    # results = asession.run(get_pythonorg(), get_reddit, get_google)
-    # print(results)
