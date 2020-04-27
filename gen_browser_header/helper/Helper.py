@@ -114,7 +114,9 @@ def detect_if_proxy_usable(proxies, timeout=5, url='https://www.baidu.com'):
     return True
 
 
-def send_request_get_response(url, if_use_proxy, proxies, header):
+def send_request_get_response(url, if_use_proxy=False, proxies=None,
+                              header=self_constant.HEADER,
+                              force_render=False):
     '''
     为了和async_send_request_get_response的参数保持一致，取消force_render
     :param url:
@@ -128,7 +130,6 @@ def send_request_get_response(url, if_use_proxy, proxies, header):
     if if_use_proxy:
         r = HTMLSession().get(url, headers=header, proxies=proxies,
                               timeout=5)
-        # verify = False
     else:
         r = HTMLSession().get(url, headers=header, timeout=2)
 
@@ -136,11 +137,15 @@ def send_request_get_response(url, if_use_proxy, proxies, header):
         print('错误代码 %s' % r.status_code)
         raise self_exception.ResponseException(r.status_code)
 
+    if force_render:
+        r.html.render()
+
     return r
 
 
 async def async_send_request_get_response(url, if_use_proxy=False, proxies=None,
-                                          header=self_constant.HEADER):
+                                          header=self_constant.HEADER,
+                                          force_render=False):
     '''
     requests-html的异步模式下，必须返回await asession.get
     :param url: request的地址
@@ -151,13 +156,15 @@ async def async_send_request_get_response(url, if_use_proxy=False, proxies=None,
     :return: 无
     '''
     if if_use_proxy:
-        return await asession.get(url, headers=header, proxies=proxies,
+        r = await asession.get(url, headers=header, proxies=proxies,
                                   timeout=5)
-        # verify = False
     else:
-        return await asession.get(url, headers=header, timeout=2)
+        r = await asession.get(url, headers=header, timeout=2)
 
+    if force_render:
+        await r.html.arender()
 
+    return r
 
 if __name__ == '__main__':
     pass
