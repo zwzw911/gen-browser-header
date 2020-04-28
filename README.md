@@ -31,7 +31,7 @@ gen_browser_header create header for http(s) request, return a **list** like
 
 `print(gen_header(setting=cur_setting, num=10))`
 
-### gen_browser_header use gen_header to generate headers, which include 2 parameters: setting and num.  
+### gen_browser_header use gen_header to generate headers, which include 3 parameters: setting, url and num.  
 ### setting
 gen_browser_header use setting to pass related parameters into function
 , setting has below keys:  
@@ -92,10 +92,20 @@ type: ***int***.
 default: **1**.  
 description: how long ago, chrome version should be choose, the max value is
  `current year - 2008`, 2008 is the year that chrome released
+ ### url  
+ type: **str**  
+ default: ***None***   
+ description: In request header, there is a item Host. gen_browser_header generate this item base on this parameter. 
+ For example, url 'https://packaging.python.org/tutorials/packaging-projects/' generate 'packaging.python.org'  
  
  ### num
  type: ***int***.  
- default: **None**. 
- how many header will be generate. if not set(default value is None), all
+ default: **None**.   
+ description: how many header will be generate. if not set(default value is None), all
   generate header will be return, otherwise, the ***num*** headers will be
    return
+
+
+### change
+0.1.0  use requests-html replace requests
+0.1.3  add function extract_host_from_url; add item host in header

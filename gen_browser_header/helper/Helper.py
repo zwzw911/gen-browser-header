@@ -4,16 +4,19 @@
 import requests
 from requests_html import HTMLSession
 from requests_html import AsyncHTMLSession
+asession = AsyncHTMLSession()
+
+
+from  urllib.parse import urlparse
 
 # from bs4 import BeautifulSoup
-import chardet
+#import chardet
 import gen_browser_header.self.SelfException as self_exception
-import ssl
+#import ssl
 
-import gen_browser_header.setting.Setting as setting
+#import gen_browser_header.setting.Setting as setting
 import gen_browser_header.self.SelfConstant as self_constant
 
-asession = AsyncHTMLSession()
 
 
 def match_expect_type(value, expect_type):
@@ -74,11 +77,7 @@ def enum_set_check(value, enum_type, replace=True):
 
 
 def detect_if_need_proxy(url):
-    # header = gen_header.gen_limit_header(1)[0]
-
-    # print(header)
     try:
-        # s = HTMLSession()
         HTMLSession().get(url, headers=self_constant.HEADER, timeout=10)
     except requests.exceptions.Timeout as e:
         print('不通过代理发起的请求超时，需要使用代理')
@@ -90,18 +89,10 @@ def detect_if_need_proxy(url):
 
 
 def detect_if_proxy_usable(proxies, timeout=5, url='https://www.baidu.com'):
-    # header = gen_header.gen_limit_header(1)[0]
-    # print('detect_if_proxy_usable')
-    # print(setting.GbhSetting.HEADER)
-    # print(proxies)
-    # print(url)
     try:
         # ssl._create_default_https_context = ssl._create_unverified_context
-        # print('start')
-
         HTMLSession().get(url, headers=self_constant.HEADER,
                           proxies=proxies, timeout=timeout)
-        # print('in')
     except requests.exceptions.Timeout as e:
         print('代理无效：超时')
         return False
@@ -166,6 +157,9 @@ async def async_send_request_get_response(url, if_use_proxy=False, proxies=None,
 
     return r
 
+
+def extract_host_from_url(url):
+    return urlparse(url).netloc
+
 if __name__ == '__main__':
     pass
-

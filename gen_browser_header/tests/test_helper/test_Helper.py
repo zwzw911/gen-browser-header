@@ -53,3 +53,8 @@ class Test_detect_if_need_proxy():
 
     def test_no_need_proxy(self):
         assert helper.detect_if_need_proxy('https://www.baidu.com') == False
+
+@pytest.mark.extract_host_from_url
+class Test_extract_host_from_url():
+    def test_extract_host_from_url(self):
+        assert helper.extract_host_from_url('https://www.jianshu.com/p/a77398ab5c66') == 'www.jianshu.com'
